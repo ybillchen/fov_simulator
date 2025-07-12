@@ -58,7 +58,7 @@ def generate_figure(focal_length, sensor_width, sensor_height, objname):
         ax0.plot(fov_arr[:,0], fov_arr[:,1], c="w", lw=2)
 
         ax0.text(
-            0.95, 0.95, objname, ha="right", va="top", color="w", fontsize=16, 
+            0.04, 0.96, objname, ha="left", va="top", color="w", fontsize=16, 
             transform=ax0.transAxes
         )
         ax0.text(
@@ -66,6 +66,11 @@ def generate_figure(focal_length, sensor_width, sensor_height, objname):
             f"f: {focal_length:g} mm + "\
                 f"camera: {sensor_width:g}x{sensor_height:g} mm",
             ha="center", va="top", color="w", fontsize=10)
+        ax0.text(
+            0.98, 0.02, "Image credit: SDSS", 
+            ha="right", va="bottom", color="w", fontsize=10, alpha=0.8,
+            transform=ax0.transAxes
+        )
 
         ax0.set_aspect("equal")
         ax0.set_xticks([])
@@ -75,9 +80,9 @@ def generate_figure(focal_length, sensor_width, sensor_height, objname):
     except Exception as e:
         st.error(f"Error: {e}")
 
-if "ran_once" not in st.session_state:
-    st.session_state.ran_once = True
+if st.button("Generate FOV"):
     generate_figure(focal_length, sensor_width, sensor_height, objname)
 
-if st.button("Generate FOV"):
+if "ran_once" not in st.session_state:
+    st.session_state.ran_once = True
     generate_figure(focal_length, sensor_width, sensor_height, objname)
