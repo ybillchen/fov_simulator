@@ -10,21 +10,47 @@ from astropy.coordinates import SkyCoord
 st.title("Astrophotography FOV Simulator")
 st.markdown("Author: [Bill Chen](https://yingtianchen.com/)")    
 
-focal_length = st.number_input(
-    "Telescope Focal Length (mm)", 
-    value=1500.0, min_value=0.0
-)
-sensor_width = st.number_input(
-    "Camera Sensor Width (mm)", 
-    value=11.31, min_value=0.0
-)
-sensor_height = st.number_input(
-    "Camera Sensor Height (mm)", 
-    value=11.31, min_value=0.0
-)
-objname = st.text_input(
-    "Object Name", value="M101"
-)
+# focal_length = st.number_input(
+#     "Telescope Focal Length (mm)", 
+#     value=1500.0, min_value=0.0
+# )
+# sensor_width = st.number_input(
+#     "Camera Sensor Width (mm)", 
+#     value=11.31, min_value=0.0
+# )
+# sensor_height = st.number_input(
+#     "Camera Sensor Height (mm)", 
+#     value=11.31, min_value=0.0
+# )
+# objname = st.text_input(
+#     "Object Name", value="M101"
+# )
+
+def main():
+    with st.form(key="input_form"):
+        focal_length = st.number_input(
+            "Telescope Focal Length (mm)", 
+            value=1500.0, min_value=0.0
+        )
+        sensor_width = st.number_input(
+            "Camera Sensor Width (mm)", 
+            value=11.31, min_value=0.0
+        )
+        sensor_height = st.number_input(
+            "Camera Sensor Height (mm)", 
+            value=11.31, min_value=0.0
+        )
+        objname = st.text_input(
+            "Object Name", value="M101"
+        )
+                
+        st.markdown("<div style='padding-top: 1.5rem'>", unsafe_allow_html=True)
+        submit = st.form_submit_button(label="Generate FOV")
+        st.markdown("</div>", unsafe_allow_html=True)
+
+    if submit or "ran_once" not in st.session_state:
+        st.session_state.ran_once = True
+        generate_figure(focal_length, sensor_width, sensor_height, objname)
 
 def generate_figure(focal_length, sensor_width, sensor_height, objname):
     rad2deg = 180 / np.pi
@@ -80,9 +106,4 @@ def generate_figure(focal_length, sensor_width, sensor_height, objname):
     except Exception as e:
         st.error(f"Error: {e}")
 
-if st.button("Generate FOV"):
-    generate_figure(focal_length, sensor_width, sensor_height, objname)
-
-if "ran_once" not in st.session_state:
-    st.session_state.ran_once = True
-    generate_figure(focal_length, sensor_width, sensor_height, objname)
+main()
